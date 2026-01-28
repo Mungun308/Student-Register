@@ -14,11 +14,22 @@ export default function App(){
           ]);
         };
 
+      const updateFilters = (newFilters) => {
+          setFilters(newFilters);
+        };
+
         return (
-          <>
+          <div className="app-container">
             <Header />
-            <StudentForm onAddStudent={addStudent} />
-            {/* <StudentTable students={students}/> */}
-          </>
+            <div className="main-content">
+              <div className="sidebar">
+                <Filter onFilterChange={updateFilters} />
+              </div>
+              <div className="content-area">
+                <StudentForm onAddStudent={addStudent} />
+                <StudentTable students={students} filters={filters} />
+              </div>
+            </div>
+          </div>
         );
 }
