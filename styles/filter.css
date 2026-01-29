@@ -39,13 +39,12 @@ body{
     box-shadow:var(--shadow);
     border-radius:15px;
     min-height: 1024px;
-    text-align: start;
 }
 
 .title{
     font-size:var(--fontMed);
     color:var(--colorFont);
-    padding:var(--fontLarge);
+    padding:var(--fontSmall);
     display: flex;
     justify-content: flex-start;
 }
@@ -63,11 +62,12 @@ body{
 
 
 .checkbox-label{
-    margin-right: 10px;
-    padding:2px;
     display: flex;
-    justify-content: space-between;
-
+    align-items: center;  
+    gap: 8px;  
+    margin-right: 10px;
+    padding: 2px;
+    width: 100%;  
 }
 
 .chechbox{

@@ -3,8 +3,9 @@ import "../styles/main.css";
 import { notification } from 'antd';
 import { db } from './firebase'; 
 import { collection, addDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-export default function StudentForm({onAddStudent}) {
+export default function StudentForm({onAddStudent, setFormView}) {
   const [form, setForm] = useState({
     lastName: "",
     firstName: "",
@@ -35,6 +36,7 @@ export default function StudentForm({onAddStudent}) {
     "Бизнесийн шинжээч"
   ];
 
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -62,9 +64,11 @@ export default function StudentForm({onAddStudent}) {
         placement: 'topRight'
       });
 
+
+
       onAddStudent(form);
       setForm(initialForm);
-
+      setFormView(false)
     } catch (error) {
       console.error("Error adding document: ", error);
       notification.error({
@@ -78,6 +82,9 @@ export default function StudentForm({onAddStudent}) {
 
   return (
     <form className="box" onSubmit={handleSubmit}>
+      <button class='plus' onClick={()=>setFormView(false)}>
+        <img src='./icons/dropdown.svg'></img>
+        </button>
       <h1>ОЮУТНЫ БҮРТГЭЛ</h1>
       
       <div className="row">

@@ -150,7 +150,8 @@ h1{
 .table-title{
     display: flex;
     flex: row;
-    justify-content: start;
+    justify-content: space-between;
+    align-items: center;
     margin: 0;
     padding: var(--fontLarge);
 }

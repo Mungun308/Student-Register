@@ -7,8 +7,9 @@ import {
 } from '@tanstack/react-table';
 import { db } from './firebase';
 import { collection, getDocs } from "firebase/firestore";
-import { useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 import StudentForm from './StudentForm';
+import { useNavigate } from 'react-router-dom';
 
 const columnHelper = createColumnHelper();
 
@@ -51,10 +52,14 @@ const columns = [
   }),
 ];
 
-export default function StudentTable({ students: localStudents, filters }) {
+export default function StudentTable({ students: localStudents, filters, setFormView }) {
   const [firebaseStudents, setFirebaseStudents] = React.useState([]);
   const [combinedData, setCombinedData] = React.useState([]);
   const navigate=useNavigate();
+  const handleNavigate = () => {
+    navigate('/StudentForm'); 
+  };
+
 
   //firebase s fretch hiih
   React.useEffect(()=> {
@@ -67,7 +72,7 @@ export default function StudentTable({ students: localStudents, filters }) {
         }));
         setFirebaseStudents(fetchedStudents);
       } catch (error) {
-        console.error("Error fetching students: ", error);
+        console.error("Error fetching students: ",error);
       }
     };
 
@@ -138,11 +143,12 @@ export default function StudentTable({ students: localStudents, filters }) {
       <div className='table-title'>
       <h2>ОЮУТНЫ ЖАГСААЛТ</h2>
           
-          <button className='plus' type='primary' onClick={()=>navigate("/StudentForm")}>
+          <button className='plus' type='button' onClick={()=>setFormView(true)}>
             <img src='./icons/plus.svg'></img>
           </button>
          
       </div>
+
       {combinedData.length===0?(
         <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
           Оюутан олдсонгүй

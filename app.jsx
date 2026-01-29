@@ -13,6 +13,7 @@ export default function App(){
     gpa: [],
     school: []
   });
+  const [formview, setFormView] = useState(false);
 
   const addStudent = (student) => {
     setStudents((prev) => [
@@ -38,10 +39,18 @@ export default function App(){
         </div>
         
         <div className="content-area">
-          <Routes>
-              <Route  path="/StudentForm" element={<StudentForm onAddStudent={addStudent}/>}/>
+         {
+          formview?
+          <div>
+              <Routes>
+              <Route  path="/StudentForm" element={<StudentForm setFormView={setFormView} onAddStudent={addStudent}/>}/>
           </Routes>
-         <StudentTable students={students} filters={filters} />
+
+          </div>:
+          <div> <StudentTable students={students} filters={filters} setFormView={setFormView} /></div>
+         }
+        
+        
         </div>
         
       </div>
