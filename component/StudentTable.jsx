@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import {
   createColumnHelper,
@@ -8,6 +7,8 @@ import {
 } from '@tanstack/react-table';
 import { db } from './firebase';
 import { collection, getDocs } from "firebase/firestore";
+import { useNavigate } from 'react-router-dom';
+import StudentForm from './StudentForm';
 
 const columnHelper = createColumnHelper();
 
@@ -53,6 +54,7 @@ const columns = [
 export default function StudentTable({ students: localStudents, filters }) {
   const [firebaseStudents, setFirebaseStudents] = React.useState([]);
   const [combinedData, setCombinedData] = React.useState([]);
+  const navigate=useNavigate();
 
   //firebase s fretch hiih
   React.useEffect(()=> {
@@ -133,13 +135,19 @@ export default function StudentTable({ students: localStudents, filters }) {
 
   return (
     <div className="table-container">
-      <h2>Оюутны жагсаалт</h2>
-      
-      {combinedData.length === 0 ? (
+      <div className='table-title'>
+      <h2>ОЮУТНЫ ЖАГСААЛТ</h2>
+          
+          <button className='plus' type='primary' onClick={()=>navigate("/StudentForm")}>
+            <img src='./icons/plus.svg'></img>
+          </button>
+         
+      </div>
+      {combinedData.length===0?(
         <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
           Оюутан олдсонгүй
         </div>
-      ) : (
+      ):(
         <div className="table-wrapper">
           <table className="student-table">
             <thead>

@@ -17,14 +17,14 @@ export default function Filter({ onFilterChange }) {
       ? filters.year.filter(y => y !== year)
       : [...filters.year, year];
     
-    const newFilters = { ...filters, year: newYears };
+    const newFilters={...filters, year: newYears };
     setFilters(newFilters);
     onFilterChange(newFilters);
   };
 
   const handleGpaChange = (gpa) => {
     const newGpas = filters.gpa.includes(gpa)
-      ? filters.gpa.filter(g => g !== gpa)
+      ? filters.gpa.filter(g =>g!==gpa)
       : [...filters.gpa, gpa];
     
     const newFilters = { ...filters, gpa: newGpas };
@@ -34,7 +34,7 @@ export default function Filter({ onFilterChange }) {
 
   const handleSchoolChange = (school) => {
     const newSchools = filters.school.includes(school)
-      ? filters.school.filter(s => s !== school)
+      ? filters.school.filter(s=>s!==school)
       : [...filters.school, school];
     
     const newFilters = { ...filters, school: newSchools };
@@ -46,7 +46,7 @@ export default function Filter({ onFilterChange }) {
     <div className='filter-box'>
       <h3>ШҮҮЛТҮҮР</h3>
       
-      <div className='id-section'>
+      <div className='section'>
         <p className='title'>ID</p>
         {years.map(year => (
           <label key={year} className="checkbox-label">
@@ -62,7 +62,7 @@ export default function Filter({ onFilterChange }) {
       </div>
       
 
-      <div className='gpa-section'>
+      <div className='section'>
         <p className='title'>GPA</p>
         {gpaRanges.map(gpa => (
           <label key={gpa} className="checkbox-label">
@@ -77,7 +77,7 @@ export default function Filter({ onFilterChange }) {
         ))}
       </div>
       
-      <div className='school-section'>
+      <div className='section'>
         <p className='title'>Сургууль</p>
         {schools.map(school => (
           <label key={school} className="checkbox-label">

@@ -72,7 +72,6 @@ h1{
 .attribute{
     min-width: 120px;
     text-align: right;
-    font-weight: bold;
     color: var(--colorBlack);
 }
 
@@ -148,6 +147,14 @@ h1{
     text-align: center;
 }
 
+.table-title{
+    display: flex;
+    flex: row;
+    justify-content: start;
+    margin: 0;
+    padding: var(--fontLarge);
+}
+
 .student-table {
     width: 100%;
     border-collapse: collapse;
@@ -162,12 +169,23 @@ h1{
 
 .student-table th {
     background-color: var(--colorMidGrey);
-    color: white;
-    font-weight: bold;
+    color:var(--colorBlack);
 }
 
 .student-table tr:hover {
     background-color: var(--colorMidGrey);
 }
 
+.plus{
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
 
+.plus:active{
+    box-shadow: var(--shadow);
+}
