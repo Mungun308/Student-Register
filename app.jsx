@@ -15,16 +15,22 @@ export default function App(){
           ]);
         };
 
-        return (<BrowseRouter>
-          <Routes>
-              <Header />
-              <StudentForm onAddStudent={addStudent} />
-              <StudentTable students={students}/>
-              <Route path='/' element={<Header/>}/>
-              <Route path='/' elemnent={<StudentTable/>}/>
-              <Route path='/' element={<StudentForm/>}/>
-              <Route path='/' element={<Filter/>}/>
-          </Routes>
-          </BrowseRouter>
+      const updateFilters = (newFilters) => {
+          setFilters(newFilters);
+        };
+
+        return (
+          <div className="app-container">
+            <Header />
+            <div className="main-content">
+              <div className="sidebar">
+                <Filter onFilterChange={updateFilters} />
+              </div>
+              <div className="content-area">
+                <StudentForm onAddStudent={addStudent} />
+                <StudentTable students={students} filters={filters} />
+              </div>
+            </div>
+          </div>
         );
 }
