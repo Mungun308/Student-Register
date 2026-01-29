@@ -72,6 +72,7 @@ export default function StudentForm({onAddStudent}) {
         description: 'Бүртгэхэд алдаа гарлаа!',
         placement: 'topRight'
       });
+
     }
   };
 
@@ -175,6 +176,7 @@ export default function StudentForm({onAddStudent}) {
         type="submit" 
         className="submit" 
         disabled={!form.firstName || !form.id || !form.lastName}
+           
       >
         БҮРТГЭХ
       </button>

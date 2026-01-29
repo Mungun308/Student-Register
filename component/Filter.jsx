@@ -1,6 +1,11 @@
 import {useEffect, useState} from 'react';
-import Sidebar from './Sidebar';
 import "../styles/filter.css";
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
 
 const [filters, setFilters]=useState({
             id:'',
@@ -11,15 +16,47 @@ const [filters, setFilters]=useState({
     
 const [filteredresult, setFilteredResult]=useState([]);
 
-useEffect(()=>{
-    const applyIdFilters=()=>{
-        let filtered= student.filter(students=>{
-            if(students.id===isChecked.id){
 
-            }
-        })
+useEffect(() => {
+    const combined = [...firebaseStudents];
+    
+    localStudents.forEach(student=>{
+      if (!combined.find(s=>s.id===student.id)) {
+        combined.push({ ...student, key: student.id });
+      }
+    });
+    
+    let filtered = combined;
+    
+    //id iflter
+    if (filters.year && filters.year.length > 0) {
+      filtered = filtered.filter(student => {
+        const studentYear = student.id ? student.id.substring(0, 2) : '';
+        return filters.year.includes(studentYear);
+      });
     }
-})
+
+    //gpa filter
+    if (filters.gpa && filters.gpa.length > 0) {
+      filtered = filtered.filter(student => {
+        const gpa = parseFloat(student.gpa);
+        return filters.gpa.some(range => {
+          const min = parseFloat(range);
+          const max = min + 1;
+          return gpa >= min && gpa < max;
+        });
+      });
+    }
+
+    //school filter
+    if (filters.school && filters.school.length > 0) {
+      filtered = filtered.filter(student => 
+        filters.school.includes(student.school)
+      );
+    }
+
+    setFilteredStudents(filtered);
+  }, [firebaseStudents, localStudents, filters]);
 
 
 export default  function Filter(){
@@ -86,9 +123,24 @@ export default  function Filter(){
                 </label>
             </div>
             <div className='school-section'>
-
+                 
+                        <select 
+                            name="school" 
+                            className="filter-dropdown" 
+                            value={form.school} 
+                            onChange={handleChange}
+                            required
+                        >
+                            <option value="">Сургууль сонгох</option>
+                            {schools.map((s) => ( 
+                            <option key={s} value={s}>{s}</option>
+                            ))}
+                        </select>
+                     
             </div>
-
+                            <button type='submit'>
+                                <img src='./icons/search.svg'></img>
+                            </button>
         </div>
     )
         

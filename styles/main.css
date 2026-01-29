@@ -13,6 +13,7 @@
 *{
     font-family: 'Istok Web';
 }
+
 /*background*/
 
 body{
@@ -47,6 +48,7 @@ h1{
     flex-direction: row;
     gap: var(--fontLarge);
     justify-content: flex-start;
+
 }
 
 .textbox input{
@@ -115,7 +117,7 @@ h1{
 .submit:active{
     background-color:var(--color);
     border: solid 1px var(--colorPurple);
-    border-radius:var(fontSmall);
+    border-radius:var(--fontSmall);
     box-shadow:var(--shadow);
     color: var(--colorPurple);
 }

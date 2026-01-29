@@ -1,0 +1,44 @@
+:root{
+    --fontSmall:10px;
+    --fontMed:15px;
+    --fontLarge:20px;
+    --colorPurple:#5B23FF;
+    --colorGrey: #D9D9D9;
+    --colorMidGrey: #EEEEEE;
+    --colorWhite: #F5F5F5;
+    --colorBlack: #33363F;
+    --shadow: 1px 1px 15px -7px #525252;
+}
+
+*{
+    font-family: 'Istok Web';
+}
+
+/*filter*/
+
+body{
+    background-color: var(--colorMidGrey);
+}
+
+.filter-box{
+    background-color: var(--colorWhite);
+    max-width: 250px;
+    min-width: 195px;
+    margin: 0;
+    padding:var(--fontSmall);
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.id-section{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-around;
+    margin: 0;
+    padding:var(--fontSmall);
+    border-bottom: solid 1px var(--colorBlack); 
+}
+
+.checkbox{
+    gap: var(--fontSmall);
+}
