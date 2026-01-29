@@ -1,147 +1,99 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import "../styles/filter.css";
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
 
-const [filters, setFilters]=useState({
-            id:'',
-            gpa:'',
-            school:''
+export default function Filter({ onFilterChange }) {
+  const [filters, setFilters] = useState({
+    year: [],
+    gpa: [],
+    school: []
+  });
 
-        });
+  const years = ['22', '23', '24', '25'];
+  const gpaRanges = ['4', '3', '2', '1'];
+  const schools = ["МУИС", "ШУТИС", "ХУИС", "СЭЗИС", "ХҮИС", "МҮИС"];
+
+  const handleYearChange = (year) => {
+    const newYears = filters.year.includes(year)
+      ? filters.year.filter(y => y !== year)
+      : [...filters.year, year];
     
-const [filteredresult, setFilteredResult]=useState([]);
+    const newFilters = { ...filters, year: newYears };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
 
-
-useEffect(() => {
-    const combined = [...firebaseStudents];
+  const handleGpaChange = (gpa) => {
+    const newGpas = filters.gpa.includes(gpa)
+      ? filters.gpa.filter(g => g !== gpa)
+      : [...filters.gpa, gpa];
     
-    localStudents.forEach(student=>{
-      if (!combined.find(s=>s.id===student.id)) {
-        combined.push({ ...student, key: student.id });
-      }
-    });
+    const newFilters = { ...filters, gpa: newGpas };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
+
+  const handleSchoolChange = (school) => {
+    const newSchools = filters.school.includes(school)
+      ? filters.school.filter(s => s !== school)
+      : [...filters.school, school];
     
-    let filtered = combined;
-    
-    //id iflter
-    if (filters.year && filters.year.length > 0) {
-      filtered = filtered.filter(student => {
-        const studentYear = student.id ? student.id.substring(0, 2) : '';
-        return filters.year.includes(studentYear);
-      });
-    }
+    const newFilters = { ...filters, school: newSchools };
+    setFilters(newFilters);
+    onFilterChange(newFilters);
+  };
 
-    //gpa filter
-    if (filters.gpa && filters.gpa.length > 0) {
-      filtered = filtered.filter(student => {
-        const gpa = parseFloat(student.gpa);
-        return filters.gpa.some(range => {
-          const min = parseFloat(range);
-          const max = min + 1;
-          return gpa >= min && gpa < max;
-        });
-      });
-    }
+  return (
+    <div className='filter-box'>
+      <h3>ШҮҮЛТҮҮР</h3>
+      
+      <div className='id-section'>
+        <p className='title'>ID</p>
+        {years.map(year => (
+          <label key={year} className="checkbox-label">
+            <input 
+              type="checkbox"
+              className='checkbox'
+              checked={filters.year.includes(year)}
+              onChange={() => handleYearChange(year)}
+            />
+            <span>{year}</span>
+          </label>
+        ))}
+      </div>
+      
 
-    //school filter
-    if (filters.school && filters.school.length > 0) {
-      filtered = filtered.filter(student => 
-        filters.school.includes(student.school)
-      );
-    }
-
-    setFilteredStudents(filtered);
-  }, [firebaseStudents, localStudents, filters]);
-
-
-export default  function Filter(){
-    return(
-        <div className='filter-box'>
-            <h3>ШҮҮЛТҮҮР</h3>
-            
-            <div className='id-section'>
-                <p className='title'>ID</p>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>22                             
-                    </input>
-                </label>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>23                             
-                    </input>
-                </label>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>24                             
-                    </input>
-                </label>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>25                             
-                    </input>
-                </label>
-            </div>
-            <div className='gpa-section'>
-                <p className='title'>GPA</p>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>4</input>
-                </label>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>3</input>
-                </label>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>3</input>
-                </label>
-                <label>
-                    <input type="checkbox"
-                    className='checkbox'
-                    checked={isChecked}
-                    onChange={handleChange}>1</input>
-                </label>
-            </div>
-            <div className='school-section'>
-                 
-                        <select 
-                            name="school" 
-                            className="filter-dropdown" 
-                            value={form.school} 
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Сургууль сонгох</option>
-                            {schools.map((s) => ( 
-                            <option key={s} value={s}>{s}</option>
-                            ))}
-                        </select>
-                     
-            </div>
-                            <button type='submit'>
-                                <img src='./icons/search.svg'></img>
-                            </button>
-        </div>
-    )
-        
+      <div className='gpa-section'>
+        <p className='title'>GPA</p>
+        {gpaRanges.map(gpa => (
+          <label key={gpa} className="checkbox-label">
+            <input 
+              type="checkbox"
+              className='checkbox'
+              checked={filters.gpa.includes(gpa)}
+              onChange={() => handleGpaChange(gpa)}
+            />
+            <span>{gpa}</span>
+          </label>
+        ))}
+      </div>
+      
+      <div className='school-section'>
+        <p className='title'>Сургууль</p>
+        {schools.map(school => (
+          <label key={school} className="checkbox-label">
+            <input 
+              type="checkbox"
+              className='checkbox'
+              checked={filters.school.includes(school)}
+              onChange={() => handleSchoolChange(school)}
+            />
+            <span>{school}</span>
+          </label>
+        ))}
+      </div>
+      <button type='submit' className='filter-submit'>
+        <img src='./icons/search.svg'></img>
+      </button>
+    </div>
+  );
 }

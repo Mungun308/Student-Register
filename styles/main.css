@@ -11,113 +11,163 @@
 }
 
 *{
-    font-family: 'Istok Web';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Istok Web', sans-serif;
 }
 
-/*background*/
-
-body{
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background-color: var(--colorMidGrey);
 }
 
-.box{
-    margin: 10%;
-    padding: 60px;
+.main-content {
+    display: flex;
+    flex: 1;
+    gap: 20px;
+    padding: 20px;
+}
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.content-area {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items:center;
+    gap: 30px;
+}
+
+/*Form*/
+.box{
     background-color:var(--colorWhite);
     border: none;
     border-radius: var(--fontLarge);
     box-shadow:var(--shadow);
+    padding: 40px;
+    width: 100%;
     max-width: 570px;
-    max-height: 720px;
+    margin: 0 auto;
 }
 
 h1{
     font-size: var(--fontLarge);
-    margin: var(--fontLarge);
-    padding: var(--fontLarge);
+    margin-bottom: var(--fontLarge);
+    text-align: center;
+    color: var(--colorPurple);
 }
 
 .row{
-    margin: 0;
-    padding: 0;
     display: flex;
-    flex-direction: row;
-    gap: var(--fontLarge);
-    justify-content: flex-start;
-
-}
-
-.textbox input{
-    font-family:'Istok Web',Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    display:flex;
-    flex-direction:column;
-    justify-content: space-around;
-    margin:var(--fontSmall);
-    padding:0;
-    border: 5px;
-    min-height: 33px;
-    min-width: 355px;
-    border: none;
-    border-radius: var(--fontSmall);
-    background-color: var(--colorMidGrey);
-}
-
-.textbox-section{
-    display:flex;
-    flex-direction:column;
-    gap:var(--fontLarge);
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
 }
 
 .attribute{
-    display: flex;
-    justify-content:flex-start;
+    min-width: 120px;
+    text-align: right;
+    font-weight: bold;
+    color: var(--colorBlack);
+}
+
+.textbox{
+    flex: 1;
+}
+
+.textbox input{
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: var(--fontSmall);
+    background-color: var(--colorMidGrey);
+    font-size: var(--fontMed);
 }
 
 .form-dropdown{
-    margin:var(--fontSmall);
-    padding:0;
-    padding: 10px;
-    min-height: 33px;
-    min-width: 355px;
-    -webkit-appearance: none;
-    background-image: url("./icons/dropdown.svg");
-    background-repeat: no-repeat;
-    background-position: right 10px center; 
-    background-size: 1em; 
-    padding-right: 30px;
+    width: 100%;
+    padding: 10px 15px;
     border: none;
-    border-radius: var(--fontMed);
+    border-radius: var(--fontSmall);
     background-color: var(--colorMidGrey);
+    font-size: var(--fontMed);
+    appearance: none;
+    background-image: url("/icons/dropdown.svg");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
 }
 
-/*submit-button*/
+
 .submit{
     background-color:var(--colorPurple);
     color:var(--colorWhite);
     font-size: var(--fontMed);
+    font-weight: bold;
     border:none;
     border-radius: var(--fontLarge);
-    margin:2rem;
-    padding: 1rem;
-    transform: transition 0.
-    2s ease;
-    min-height: 2rem;
-    min-width: 135px;
+    padding: 12px 30px;
+    cursor: pointer;
+    display: block;
+    margin: 30px auto 0;
+    transition: background-color 0.2s;
 }
 
 .submit:hover{
     background-color:var(--colorBlack);
-    transition-duration: 0.2s;
 }
 
 .submit:active{
-    background-color:var(--color);
-    border: solid 1px var(--colorPurple);
-    border-radius:var(--fontSmall);
-    box-shadow:var(--shadow);
+    background-color:var(--colorWhite);
+    border: 2px solid var(--colorPurple);
     color: var(--colorPurple);
 }
+
+.submit:disabled {
+    background-color: var(--colorGrey);
+    cursor: not-allowed;
+}
+
+.table-container {
+    width: 100%;
+    background: var(--colorWhite);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+}
+
+.table-container h2 {
+    margin-bottom: 20px;
+    color: var(--colorPurple);
+    text-align: center;
+}
+
+.student-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-table th,
+.student-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--colorGrey);
+}
+
+.student-table th {
+    background-color: var(--colorMidGrey);
+    color: white;
+    font-weight: bold;
+}
+
+.student-table tr:hover {
+    background-color: var(--colorMidGrey);
+}
+
+

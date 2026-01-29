@@ -8,6 +8,7 @@
     --colorWhite: #F5F5F5;
     --colorBlack: #33363F;
     --shadow: 1px 1px 15px -7px #525252;
+    --colorFont: #7A7A7C;
 }
 
 *{
@@ -15,6 +16,12 @@
 }
 
 /*filter*/
+h3{
+    display: flex;
+    justify-content:center;
+    color:var(--colorGrey);
+
+}
 
 body{
     background-color: var(--colorMidGrey);
@@ -22,14 +29,25 @@ body{
 
 .filter-box{
     background-color: var(--colorWhite);
-    max-width: 250px;
+    max-width: 220px;
     min-width: 195px;
     margin: 0;
-    padding:var(--fontSmall);
+    padding:var(--fontLarge);
     display:flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
+    box-shadow:var(--shadow);
+    border-radius:15px;
+    min-height: 1024px;
 }
+
+.title{
+    font-size:var(--fontMed);
+    color:var(--colorFont);
+    padding:var(--fontLarge);
+    
+}
+
 .id-section{
     display:flex;
     flex-direction: column;
@@ -37,8 +55,42 @@ body{
     margin: 0;
     padding:var(--fontSmall);
     border-bottom: solid 1px var(--colorBlack); 
+
+}
+
+.gpa-section{
+    display:flex;
+    flex-direction:column;
+    gap:var(--fontLarge);
+    border-bottom: solid 1px var(--colorMidGrey);
+    margin:var(--fontLarge);
+    padding:0;
+    flex: auto 0 0;
+    width: 190px;
+    max-height: 200px;
 }
 
 .checkbox{
     gap: var(--fontSmall);
+
 }
+
+input[type="checkbox"] {
+  accent-color: var(--colorPurple);
+  appearance: var(--colorPurple);
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 5px;
+}
+
+.filter-submit{
+    background: var(--colorFont);
+    border: none;
+    border-radius:var(--fontSmall);
+    margin: 0;
+    padding: 5px;
+}
+
+
+

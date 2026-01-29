@@ -1,12 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { db } from './firebase'; 
+
+import * as React from 'react';
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { db } from './firebase';
 import { collection, getDocs } from "firebase/firestore";
 
-export default function StudentTable({ students: localStudents, filters }) { 
-  const [firebaseStudents, setFirebaseStudents] = useState([]);
-  const [filteredStudents, setFilteredStudents] = useState([]);
+const columnHelper = createColumnHelper();
 
-  useEffect(() => {
+const columns = [
+  columnHelper.accessor('', {
+    id: 'index',
+    header: '№',
+    cell: (info) => info.row.index + 1,
+    size: 50,
+  }),
+  columnHelper.accessor('lastName', {
+    header: 'Овог',
+    cell: (info) => info.getValue(),
+    size: 120,
+  }),
+  columnHelper.accessor('firstName', {
+    header: 'Нэр',
+    cell: (info) => info.getValue(),
+    size: 120,
+  }),
+  columnHelper.accessor('id', {
+    header: 'ID',
+    cell: (info) => info.getValue(),
+    size: 100,
+  }),
+  columnHelper.accessor('gpa', {
+    header: 'GPA',
+    cell: (info) => info.getValue(),
+    size: 80,
+  }),
+  columnHelper.accessor('school', {
+    header: 'Сургууль',
+    cell: (info) => info.getValue(),
+    size: 120,
+  }),
+  columnHelper.accessor('program', {
+    header: 'Хөтөлбөр',
+    cell: (info) => info.getValue(),
+    size: 180,
+  }),
+];
+
+export default function StudentTable({ students: localStudents, filters }) {
+  const [firebaseStudents, setFirebaseStudents] = React.useState([]);
+  const [combinedData, setCombinedData] = React.useState([]);
+
+  //firebase s fretch hiih
+  React.useEffect(()=> {
     const fetchStudents = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "students"));
@@ -23,75 +72,109 @@ export default function StudentTable({ students: localStudents, filters }) {
     fetchStudents();
   }, []);
 
-  useEffect(() => {
-    const combined = [...firebaseStudents];
+
+  React.useEffect(() => {
+   
+    const combinedMap = new Map();
     
-    localStudents.forEach(student=>{
-      if (!combined.find(s=>s.id===student.id)) {
-        combined.push({ ...student, key: student.id });
+    //firebase-s 
+    firebaseStudents.forEach(student => {
+      if (student.id) {
+        combinedMap.set(student.id, student);
       }
     });
     
+    //ijil id-tai bol local dr hadgalna
+    localStudents.forEach(student => {
+      if (student.id) {
+        combinedMap.set(student.id, { ...student, key: student.id });
+      }
+    });
+    
+    const combined = Array.from(combinedMap.values());
+    
     let filtered = combined;
     
-    //id iflter
     if (filters.year && filters.year.length > 0) {
       filtered = filtered.filter(student => {
-        const studentYear = student.id ? student.id.substring(0, 2) : '';
+        if (!student.id) return false;
+        const studentYear = student.id.toString().substring(0, 2);
         return filters.year.includes(studentYear);
       });
     }
 
-    //gpa filter
     if (filters.gpa && filters.gpa.length > 0) {
       filtered = filtered.filter(student => {
         const gpa = parseFloat(student.gpa);
+        if (isNaN(gpa)) return false;
+        
         return filters.gpa.some(range => {
           const min = parseFloat(range);
-          const max = min + 1;
-          return gpa >= min && gpa < max;
+          return gpa >= min && gpa < min + 1;
         });
       });
     }
 
-    //school filter
+    // Filter school
     if (filters.school && filters.school.length > 0) {
       filtered = filtered.filter(student => 
-        filters.school.includes(student.school)
+        student.school && filters.school.includes(student.school)
       );
     }
 
-    setFilteredStudents(filtered);
+    setCombinedData(filtered);
   }, [firebaseStudents, localStudents, filters]);
+
+  const table = useReactTable({
+    data: combinedData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
     <div className="table-container">
-      <table className="student-table">
-        <thead>
-          <tr>
-            <th>№</th>
-            <th>Овог</th>
-            <th>Нэр</th>
-            <th>ID</th>
-            <th>GPA</th>
-            <th>Сургууль</th>
-            <th>Хөтөлбөр</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredStudents.map((student, index) => (
-            <tr key={student.key||student.id}>
-              <td>{index+1}</td>
-              <td>{student.lastName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.id}</td>
-              <td>{student.gpa}</td>
-              <td>{student.school}</td>
-              <td>{student.program}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h2>Оюутны жагсаалт</h2>
+      
+      {combinedData.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+          Оюутан олдсонгүй
+        </div>
+      ) : (
+        <div className="table-wrapper">
+          <table className="student-table">
+            <thead>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <th key={header.id} style={{ width: header.getSize() }}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="table-footer">
+            Нийт: {combinedData.length} оюутан
+          </div>
+        </div>
+      )}
     </div>
   );
 }
